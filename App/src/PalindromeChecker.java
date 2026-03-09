@@ -1,27 +1,22 @@
-// Recursive helper method
-static boolean isPalindromeRecursive(String str, int left, int right) {
-    // 1. Base condition: If the pointers meet or cross, we checked everything!
-    if (left >= right) {
-        return true;
-    }
+// UC10 Logic: Case-Insensitive & Space-Ignored Palindrome
 
-    // 2. If the outer characters don't match, it's not a palindrome
-    if (str.charAt(left) != str.charAt(right)) {
-        return false;
-    }
+// 1. Normalize string using String preprocessing and Regular expressions
+// \\s+ is a regex that finds all spaces. We replace them with nothing ("").
+// We also convert everything to lowercase.
+String cleanInput = original.replaceAll("\\s+", "").toLowerCase();
 
-    // 3. Recursive call: Move inward and call the method again
-    return isPalindromeRecursive(str, left + 1, right - 1);
-}
-// Standardize input
-String cleanInput = original.toLowerCase();
+// 2. Apply previous logic (Two-pointer approach is great here)
+int left = 0;
+int right = cleanInput.length() - 1;
+boolean isPalindrome = true;
 
-// UC9 Logic: Check palindrome using recursion
-boolean isPalindrome = true; // Default to true for empty strings
-
-if (cleanInput.length() > 0) {
-// Start the recursion with the first and last index
-isPalindrome = isPalindromeRecursive(cleanInput, 0, cleanInput.length() - 1);
+while (left < right) {
+        if (cleanInput.charAt(left) != cleanInput.charAt(right)) {
+isPalindrome = false;
+        break; // Mismatch found
+        }
+left++;
+right--;
         }
 
 // Print result
