@@ -1,25 +1,27 @@
+import java.util.Stack;
 // Standardize input
 String cleanInput = original.toLowerCase();
 
-// UC4 Logic: Convert string to char[]
-char[] charArray = cleanInput.toCharArray();
+        // UC5 Logic: Use stack to reverse characters and validate
+        Stack<Character> stack = new Stack<>();
 
-// Use two-pointer approach
-int left = 0;
-int right = charArray.length - 1;
-boolean isPalindrome = true;
-
-while (left < right) {
-        // Compare start & end characters
-        if (charArray[left] != charArray[right]) {
-isPalindrome = false; // Mismatch found
-        break; // Stop checking further to save time
-        }
-left++;  // Move the left pointer forward
-right--; // Move the right pointer backward
+// 1. Push characters into stack
+for (int i = 0; i < cleanInput.length(); i++) {
+        stack.push(cleanInput.charAt(i));
         }
 
-// Print the result
+        boolean isPalindrome = true;
+
+// 2. Pop and compare
+for (int i = 0; i < cleanInput.length(); i++) {
+        // Pop removes the top element (which is the last one added)
+        if (cleanInput.charAt(i) != stack.pop()) {
+        isPalindrome = false;
+        break; // Mismatch found, stop checking
+        }
+        }
+
+// 3. Print result
         if (isPalindrome) {
         System.out.println("Result: Success! '" + original + "' is a palindrome.");
 } else {
