@@ -1,52 +1,48 @@
-import java.util.Stack;
-import java.util.Deque;
-import java.util.ArrayDeque;
-// UC12: Define PalindromeStrategy interface
-interface PalindromeStrategy {
-    boolean checkPalindrome(String str);
-}
-
-// UC12: Implement StackStrategy
-class StackStrategy implements PalindromeStrategy {
+// UC13: Add the classic Two-Pointer Strategy for comparison
+class TwoPointerStrategy implements PalindromeStrategy {
     @Override
     public boolean checkPalindrome(String original) {
         String cleanInput = original.replaceAll("\\s+", "").toLowerCase();
-        Stack<Character> stack = new Stack<>();
+        int left = 0;
+        int right = cleanInput.length() - 1;
 
-        for (char c : cleanInput.toCharArray()) stack.push(c);
-
-        for (char c : cleanInput.toCharArray()) {
-            if (c != stack.pop()) return false;
+        while (left < right) {
+            if (cleanInput.charAt(left) != cleanInput.charAt(right)) return false;
+            left++;
+            right--;
         }
         return true;
     }
 }
+// UC13 Logic: Performance Comparison
 
-// UC12: Implement DequeStrategy
-class DequeStrategy implements PalindromeStrategy {
-    @Override
-    public boolean checkPalindrome(String original) {
-        String cleanInput = original.replaceAll("\\s+", "").toLowerCase();
-        Deque<Character> deque = new ArrayDeque<>();
+// Define the algorithms we want to test
+PalindromeStrategy[] strategies = {
+        new TwoPointerStrategy(),
+        new StackStrategy(),
+        new DequeStrategy()
+};
 
-        for (char c : cleanInput.toCharArray()) deque.addLast(c);
+String[] strategyNames = {"Two-Pointer", "Stack", "Deque"};
 
-        while (deque.size() > 1) {
-            if (deque.removeFirst() != deque.removeLast()) return false;
-        }
-        return true;
-    }
-}
-        // UC12 Logic: Inject strategy at runtime
-// Try swapping "new StackStrategy()" with "new DequeStrategy()"!
-        PalindromeStrategy strategy = new StackStrategy();
+System.out.println("--- Performance Comparison for: '" + original + "' ---");
 
-        // Call the method defined by the interface (Polymorphism in action!)
-        boolean isPalindrome = strategy.checkPalindrome(original);
+// Loop through each strategy, run it, and time it
+for (int i = 0; i < strategies.length; i++) {
+// 1. Capture start time
+long startTime = System.nanoTime();
 
-// Print result
-if (isPalindrome) {
-        System.out.println("Result: Success! '" + original + "' is a palindrome.");
-} else {
-        System.out.println("Result: Fail! '" + original + "' is NOT a palindrome.");
+// 2. Run algorithm
+boolean result = strategies[i].checkPalindrome(original);
+
+// 3. Capture end time
+long endTime = System.nanoTime();
+
+// Calculate execution time
+long duration = endTime - startTime;
+
+// 4. Display results
+    System.out.println(strategyNames[i] + " Strategy:");
+    System.out.println("  Result: " + result);
+    System.out.println("  Time: " + duration + " nanoseconds\n");
 }
