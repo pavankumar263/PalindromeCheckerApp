@@ -1,26 +1,52 @@
-// UC11: Dedicated service class (Single Responsibility Principle)
-class PalindromeService {
+import java.util.Stack;
+import java.util.Deque;
+import java.util.ArrayDeque;
+// UC12: Define PalindromeStrategy interface
+interface PalindromeStrategy {
+    boolean checkPalindrome(String str);
+}
 
-    // Encapsulate the logic inside this exposed method
+// UC12: Implement StackStrategy
+class StackStrategy implements PalindromeStrategy {
+    @Override
     public boolean checkPalindrome(String original) {
-        if (original == null || original.isEmpty()) {
-            return true;
-        }
-
-        // Normalize string
         String cleanInput = original.replaceAll("\\s+", "").toLowerCase();
+        Stack<Character> stack = new Stack<>();
 
-        // Internal Data Structure & Logic (Array / Two-Pointer approach)
-        int left = 0;
-        int right = cleanInput.length() - 1;
+        for (char c : cleanInput.toCharArray()) stack.push(c);
 
-        while (left < right) {
-            if (cleanInput.charAt(left) != cleanInput.charAt(right)) {
-                return false; // Mismatch found
-            }
-            left++;
-            right--;
+        for (char c : cleanInput.toCharArray()) {
+            if (c != stack.pop()) return false;
         }
-        return true; // All characters matched
+        return true;
     }
+}
+
+// UC12: Implement DequeStrategy
+class DequeStrategy implements PalindromeStrategy {
+    @Override
+    public boolean checkPalindrome(String original) {
+        String cleanInput = original.replaceAll("\\s+", "").toLowerCase();
+        Deque<Character> deque = new ArrayDeque<>();
+
+        for (char c : cleanInput.toCharArray()) deque.addLast(c);
+
+        while (deque.size() > 1) {
+            if (deque.removeFirst() != deque.removeLast()) return false;
+        }
+        return true;
+    }
+}
+        // UC12 Logic: Inject strategy at runtime
+// Try swapping "new StackStrategy()" with "new DequeStrategy()"!
+        PalindromeStrategy strategy = new StackStrategy();
+
+        // Call the method defined by the interface (Polymorphism in action!)
+        boolean isPalindrome = strategy.checkPalindrome(original);
+
+// Print result
+if (isPalindrome) {
+        System.out.println("Result: Success! '" + original + "' is a palindrome.");
+} else {
+        System.out.println("Result: Fail! '" + original + "' is NOT a palindrome.");
 }
