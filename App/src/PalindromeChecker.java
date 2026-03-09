@@ -1,27 +1,26 @@
-// UC10 Logic: Case-Insensitive & Space-Ignored Palindrome
+// UC11: Dedicated service class (Single Responsibility Principle)
+class PalindromeService {
 
-// 1. Normalize string using String preprocessing and Regular expressions
-// \\s+ is a regex that finds all spaces. We replace them with nothing ("").
-// We also convert everything to lowercase.
-String cleanInput = original.replaceAll("\\s+", "").toLowerCase();
-
-// 2. Apply previous logic (Two-pointer approach is great here)
-int left = 0;
-int right = cleanInput.length() - 1;
-boolean isPalindrome = true;
-
-while (left < right) {
-        if (cleanInput.charAt(left) != cleanInput.charAt(right)) {
-isPalindrome = false;
-        break; // Mismatch found
-        }
-left++;
-right--;
+    // Encapsulate the logic inside this exposed method
+    public boolean checkPalindrome(String original) {
+        if (original == null || original.isEmpty()) {
+            return true;
         }
 
-// Print result
-        if (isPalindrome) {
-        System.out.println("Result: Success! '" + original + "' is a palindrome.");
-} else {
-        System.out.println("Result: Fail! '" + original + "' is NOT a palindrome.");
+        // Normalize string
+        String cleanInput = original.replaceAll("\\s+", "").toLowerCase();
+
+        // Internal Data Structure & Logic (Array / Two-Pointer approach)
+        int left = 0;
+        int right = cleanInput.length() - 1;
+
+        while (left < right) {
+            if (cleanInput.charAt(left) != cleanInput.charAt(right)) {
+                return false; // Mismatch found
+            }
+            left++;
+            right--;
+        }
+        return true; // All characters matched
+    }
 }
