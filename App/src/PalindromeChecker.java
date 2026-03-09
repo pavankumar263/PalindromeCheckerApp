@@ -1,28 +1,24 @@
-import java.util.Stack;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.Deque;
+import java.util.ArrayDeque;
 // Standardize input
 String cleanInput = original.toLowerCase();
 
-        // UC6 Logic: Demonstrate FIFO vs LIFO
-        Stack<Character> stack = new Stack<>();
-        Queue<Character> queue = new LinkedList<>();
+        // UC7 Logic: Use Deque to compare front and rear elements
+        Deque<Character> deque = new ArrayDeque<>();
 
-// 1 & 2. Push characters to stack and enqueue characters
+// 1. Insert characters into deque
 for (int i = 0; i < cleanInput.length(); i++) {
-        char c = cleanInput.charAt(i);
-    stack.push(c);
-    queue.add(c); // add() acts as enqueue in Java
-}
+        deque.addLast(cleanInput.charAt(i));
+        }
 
         boolean isPalindrome = true;
 
-// 3. Compare dequeue vs pop
-while (!stack.isEmpty() && !queue.isEmpty()) {
-        char popChar = stack.pop();        // LIFO: gets the last letter added
-        char dequeueChar = queue.remove(); // FIFO: gets the first letter added
+// 2 & 3. Remove first & last, compare until empty (or 1 element left)
+while (deque.size() > 1) {
+        char first = deque.removeFirst();
+        char last = deque.removeLast();
 
-    if (popChar != dequeueChar) {
+    if (first != last) {
         isPalindrome = false;
         break; // Mismatch found, stop checking
         }
